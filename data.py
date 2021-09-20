@@ -1,3 +1,4 @@
+from os import stat_result
 import requests
 from bs4 import BeautifulSoup
 from time import sleep
@@ -6,6 +7,21 @@ import csv
 import wget
 import os
 import json
+import sys
+
+### this is some quick and dirty code to deal with huge csv files
+maxInt = sys.maxsize
+
+while True:
+    # decrease the maxInt value by factor 10 
+    # as long as the OverflowError occurs.
+
+    try:
+        csv.field_size_limit(maxInt)
+        break
+    except OverflowError:
+        maxInt = int(maxInt/10)
+### without this code, we can't itrate the reader object because of how big it is
 
 """
 FUNCTIONS USED TO GET INFORMATION FROM THE URLS
@@ -183,7 +199,8 @@ def downloading_exchanges(URL, ex):
         }
         emails.append(dic)
     ex['Emails'] = emails
-
+    
+    """
     ### file exchanges
     #list of files the journalist received
     files_received_list = get_files_list(page, 'collapsable communication textbox')
@@ -198,13 +215,16 @@ def downloading_exchanges(URL, ex):
 
     #downloading the files given by the journalists
     make_file_dir(ex['Slug'], False, files_given_list)
-
+    """
     return
+
 
 """
 THE CODE BELOW CALLS THE FUNCTIONS ABOVE TO OUTPUT:
     1) A DIRECTORY WITH THE FILES THAT WERE ATTACHED TO THE EMAILS
     2) A JSON FILE THAT CONTAINS THE DICTIONARY THAT HAS THE EMAIL EXCHANGES DATA
+"""
+
 """
 #making a directory to store all the files attached on the emails
 make_dir('email_files')
@@ -214,12 +234,13 @@ make_dir('recieved', 'email_files')
 
 #making a directory to store all the files attached on the emails sent by the journalist
 make_dir('given', 'email_files')
+"""
 
 #Creating the dictionary that will hold all of the data
 exchanges = {}
 
 #opening the csv file
-with open('foia_requests_test.csv', 'r') as file:
+with open('foia_requests.csv', 'r') as file:
     #making a readable object
     reader = csv.reader(file)
 
