@@ -1,0 +1,94 @@
+<html>
+
+	<head>
+		<!-- title and other meta data go in the "head" portion -->
+		<title>WTRequest?!</title>
+
+		<!-- my style sheet -->
+		<link rel="stylesheet" type="text/css" href="home.css" />
+
+	</head>
+
+    <style>
+        input[type=text], select, textarea {
+          width: 80%;
+          padding: 12px 20px;
+          margin: auto;
+          display: block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+    </style>
+
+	<body>
+		<!-- all website content that will be visible to the user go in the body -->
+        <h1> WHAT THE REQUESTS?! </h1>
+        <h3 style="margin: 20px 170px;">FOIL Request Form</h3>
+
+        <div>
+        <form action="/action_page.php">
+            <label for="jurisdiction" style="margin: 170px;">Jurisdiction</label>
+            <select id="jurisdiction" name="jurisdiction"></select>
+
+            <label for="agency" style="margin: 170px;">Agency</label>
+            <select id="agency" name="agency"></select>
+
+            <label for="request" style="margin: 170px;">Write Your Request</label>
+            <textarea type="text" id="request" name="request" style="height: 500px;" placeholder="Insert well worded email here...">Dear [insert name], 
+
+I would love if you could give me [insert name of files].
+                
+Could you pass them to me pretty please?
+                
+XOXO,
+Sherlock Holmes</textarea>
+        </form>
+        </div>
+	</body>
+
+</html>
+
+<script type="text/javascript">
+// building the dictionary of jursidiction/agency options
+    const agencies = {
+        Alabama: ["Alabama Police", "Alabama Court", "Alabama Waste Managment"],
+        Alaska: ["Alaska Police", "Alaska Court", "Alaska Waste Managment"],
+        Arizona: ["Arizona Police", "Arizona Court", "Arizona Waste Managment"],
+    }
+
+    var test = [
+        "1", "2", "3"
+    ]
+
+//using the dictionary to show the jurisdiction 
+init  = function(){
+    for (const [key, value] of Object.entries(agencies)) {
+        document.getElementById("jurisdiction").innerHTML += "<option value="+ key+ ">" + key + "</option>";
+    }
+}
+//calling the function as soon as the page is loaded
+init();
+
+//display the corresponding agency when a jursidiction is choosen
+show = function(){
+    for (const [key, value] of Object.entries(agencies)) {
+        if(document.getElementById("jurisdiction").value == key) {
+
+            var list = [];
+
+            for (var j = 0; j < agencies[key].length; j++) {
+                list += "<option>" + agencies[key][j] + "</option>";
+            }
+
+            document.getElementById("agency").innerHTML = list;
+        } 
+    }
+}
+
+//calling
+show()
+
+document.getElementById("jurisdiction").addEventListener('change', show);
+
+</script>
